@@ -1,0 +1,39 @@
+{
+  "name": "super-chan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/core/index.ts",
+  "scripts": {
+    "start": "npx ts-node-dev --transpile-only --ignore-watch /*.json src/core/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vitu2002/Super-chan.git"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Vitu2002",
+    "url": "https://github.com/Vitu2002",
+    "email": "contato@vitorlach.site"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vitu2002/Super-chan/issues"
+  },
+  "homepage": "https://github.com/Vitu2002/Super-chan#readme",
+  "dependencies": {
+    "@discordjs/builders": "^0.6.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "colors": "^1.4.0",
+    "discord-api-types": "^0.23.1",
+    "discord.js": "13.2.0",
+    "dotenv": "^10.0.0",
+    "fs": "^0.0.1-security",
+    "mongoose": "^6.0.10",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.3"
+  }
+}
