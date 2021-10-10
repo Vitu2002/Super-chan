@@ -6,10 +6,16 @@ import { magenta, red } from "colors";
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 module.exports = async (SuperChan: SuperChanTypes, interaction: Interaction) => {
-    
+
     try {
-    const Slashs: string[] = readdirSync('src/slashs')
-    const Buttons: string[] = readdirSync('src/buttons')
+    let Slashs: string[] = readdirSync('src/slashs')
+    let Buttons: string[] = readdirSync('src/buttons')
+
+    Slashs = Slashs.map(name => name.split('.')[0])
+    Buttons = Buttons.map(name => name.split('.')[0])
+
+    console.log(Slashs)
+    console.log(Buttons)
 
     if (interaction.isCommand()) {
         if (!Slashs.includes(interaction.commandName)) return interaction.reply({ content: `${emojis.error} Ops! Desculpe <@${interaction.user.id}>, mas parece que este comando não está registrado no meu sistema, eu vou notificar o meu criador para ele resolver o mais breve possível.\n${emojis.developer} <@!293913134748401674>.` })
@@ -34,6 +40,8 @@ async function Slash(SuperChan: SuperChanTypes, interaction: CommandInteraction 
 
 async function Button(SuperChan: SuperChanTypes, interaction: ButtonInteraction , name: string) {
     const file = require(`../buttons/${name}`)
+
+    console.log('a')
 
     return file.run(SuperChan, interaction)
 }
