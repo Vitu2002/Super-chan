@@ -4,10 +4,10 @@ import { Routes } from 'discord-api-types/v9';
 import { REST } from '@discordjs/rest';
 import { Guild } from 'discord.js';
 
-const SlashsArray = [];
-export const SlashsFiles = [];
+const SlashsArray: object[] = [];
+export const SlashsFiles: any = [];
 
-const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
+const rest = new REST({ version: '9' }).setToken((process.env.DISCORD_TOKEN as string));
 
 export default async function Commands(SuperChan: SuperChanTypes, files: string[]) {
     // Avisando que está começando a carregar os comandos
@@ -31,7 +31,7 @@ export default async function Commands(SuperChan: SuperChanTypes, files: string[
     })
 
     await rest.put(
-        Routes.applicationGuildCommands(SuperChan.user.id, "831638879094308935"),
+        Routes.applicationGuildCommands(`${SuperChan?.user?.id}`, "831638879094308935"),
         { body: SlashsArray },
     );
 }

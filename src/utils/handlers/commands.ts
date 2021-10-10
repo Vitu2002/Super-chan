@@ -16,7 +16,7 @@ export default async function Commands(SuperChan: SuperChanTypes, files: string[
 
             SuperChan.commands.set(commandFile.data.name, commandFile)
             if (commandFile.data.aliases)
-              commandFile.alias = true && commandFile.data.aliases.map(a => SuperChan.commands.set(a, commandFile))
+              commandFile.alias = true && commandFile.data.aliases.map((a: string) => { SuperChan.commands.set(a, commandFile)})
               console.log(magenta('[Discord]' + green(` O comando ${gray(`${commandName}`)} foi carregado com sucesso!`)))
         } catch(err) {
             console.error(magenta('[Discord]') + yellow(` O comando ${gray(`${file}`)} teve uma falha ao carregar!\n` + err));
