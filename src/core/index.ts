@@ -9,6 +9,7 @@ const SuperChan = new SuperChanTypes();
 
 config()
 MongoDB()
+Handler.Tips()
 Handler.Events(SuperChan, readdirSync('src/events'));
 Handler.Slashs(SuperChan, readdirSync('src/slashs'));
 Handler.Commands(SuperChan, readdirSync('src/commands'));

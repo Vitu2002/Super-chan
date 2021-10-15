@@ -17,6 +17,10 @@ const schema = new Schema({
         type: Number,
         default: 7
     },
+    tickets: {
+        type: Number,
+        default: 0
+    },
     lastDate: {
         type: String,
         default: '2021-01-01-00-00-01'

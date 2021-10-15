@@ -24,9 +24,11 @@ interface Slashs {
 
 export class SuperChanTypes extends Client {
     commands: Collection<string, Command>;
+    pageNumber: number;
     
     constructor() {
         super(options);
         this.commands = new Collection();
+        this.pageNumber = 0;
     }
 }

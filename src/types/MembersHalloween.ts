@@ -3,6 +3,7 @@ export default interface MembersHalloween {
     candy?: number,
     used?: number,
     buyRoleDays?: number,
+    tickets?: number,
     lastDate?: string,
     buys?: object[]
 }

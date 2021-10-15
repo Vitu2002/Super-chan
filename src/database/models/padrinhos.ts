@@ -17,6 +17,10 @@ const schema = new Schema({
         type: String,
         default: "2021-01-01-00-00-01"
     },
+    isDonator: {
+        type: Boolean,
+        default: true
+    },
     donateHistory: Array, // { date: String, value: Number }
 })
 

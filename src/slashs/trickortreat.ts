@@ -11,9 +11,7 @@ exports.run = async (SuperChan: SuperChanTypes, interaction: CommandInteraction)
     let member = await Members.findOne({ id: interaction.user.id })
 
     if (!member) {
-        const data = new Members({ id: interaction.user.id }).save()
-
-        member = await Members.findOne({ id: interaction.user.id })
+        member = new Members({ id: interaction.user.id }).save()
     }
 
     const lastDate = moment(member.lastDate, 'YYYY-MM-DD-HH-mm-ss')
@@ -45,7 +43,7 @@ exports.run = async (SuperChan: SuperChanTypes, interaction: CommandInteraction)
     .setThumbnail('')
     .setDescription(`${emojis.green} Yeah! Você bateu na porta de ${good_doors[Math.floor(Math.random() * good_doors.length)]} e ganhou **__${candy.toFixed()} Doces ${emojis.doces}__**.\n\n ${emojis.balde_de_doces} Seus doces: \*\*\_\_${candyTotal.toFixed()}\_\_\*\*`);
 
-    await member.update({ used: member.used + 1, candy: candyTotal.toFixed(), lastDate: newDate })
+    await Members.findOne({ id: interaction.user.id }).updateOne({ used: member.used + 1, candy: candyTotal.toFixed(), lastDate: newDate })
 
     interaction.reply({ embeds: [embed] })
 
@@ -66,7 +64,7 @@ exports.run = async (SuperChan: SuperChanTypes, interaction: CommandInteraction)
     } else if (i > 5) {
         // Perdeu
 
-    const candy: number = i / 100 * 2;
+    const candy: number = i / 100 * 2 - 2;
     const candyTotal: number = member.candy - candy;
 
     embed
@@ -87,7 +85,7 @@ exports.run = async (SuperChan: SuperChanTypes, interaction: CommandInteraction)
     .setThumbnail('')
     .setDescription(`${emojis.black} Oh no! Você bateu na porta de uma \_\_casa assombrada\_\_ e foi pego por uma \*\*\_\_Travessura ${emojis.travessuras}\_\_\*\* do \*\*Jack\*\*, ao correr você deixou cair \*\*metade\*\* dos seus \*\*\_\_Doces \`[${candy}]\`\_\_\*\*.\n\n ${emojis.balde_de_doces} Seus doces: \*\*\_\_${candyTotal.toFixed()}\_\_\*\*`);
 
-    await member.update({ used: member.used + 1, candy: candyTotal.toFixed(), lastDate: newDate })
+    await member.update({ used: Number(member.used + 1), candy: candyTotal.toFixed(), lastDate: newDate })
 
     interaction.reply({ embeds: [embed] })
 
