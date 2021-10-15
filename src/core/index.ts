@@ -12,7 +12,7 @@ MongoDB()
 Handler.Tips()
 Handler.Events(SuperChan, readdirSync('src/events'));
 Handler.Slashs(SuperChan, readdirSync('src/slashs'));
-Handler.Commands(SuperChan, readdirSync('src/commands'));
+//Handler.Commands(SuperChan, readdirSync('src/commands'));
 
 SuperChan.on('error', err => {
     console.error(magenta('[Discord]' + yellow(' Ops! Ocorreu um erro! ') + err))
