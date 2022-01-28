@@ -1,57 +1,69 @@
-import { Interaction, ButtonInteraction, CommandInteraction, ThreadChannel } from "discord.js";
+import { Interaction, ButtonInteraction, MessageEmbed, CommandInteraction, ThreadChannel, SelectMenuInteraction } from "discord.js";
+import { magenta, red, blue, gray, cyan, yellow, green } from "colors";
 import { SuperChanTypes } from "../types/Client";
 import emojis from "../json/emojis.json";
-import { readdirSync } from "fs";
-import { magenta, red, blue, gray, white, cyan, yellow, green } from "colors";
 import moment from "moment";
-moment.locale('pt-bt')
+moment.updateLocale('pt-bt', null);
 
-module.exports = async (SuperChan: SuperChanTypes, interaction: Interaction) => {
+const ignore = {
+    slashs: [""],
+    buttons: ["custom-roles-edit-cancel", "custom-roles-edit-icon", "custom-roles-edit-color", "custom-roles-edit-name", "custom-roles-edit", "custom-roles-info", "custom-roles-delete", "custom-roles-delete-confirm", "custom-roles-delete-cancel", "custom-roles-create", "custom-roles-save", "custom-roles-cancel",'donators-prev', 'donators-next', 'rank-prev', 'rank-next', 'shop-prev', 'shop-next', 'shop-buy'],
+    selectMenus: ["captcha"]
+}
 
+module.exports = (SuperChan: SuperChanTypes, interaction: Interaction) => {
     try {
-    let Slashs: string[] = readdirSync('src/slashs')
-    let Buttons: string[] = readdirSync('src/buttons')
-    let IgnoredButtons: string[] = ['donators-prev', 'donators-next', 'rank-prev', 'rank-next', 'shop-prev', 'shop-next', 'shop-buy']
+        if (interaction.isButton()) {
+            console.log(interaction.customId)
+            if (!SuperChan.interactions.buttons.get(interaction.customId)) return;
+            if (ignore.buttons.includes(interaction.customId)) return;
+        
+            return handle(SuperChan, interaction, "BUTTON");
+        } else if (interaction.isCommand()) {
+            if (!SuperChan.interactions.slashs.get(interaction.commandName)) return;
+            if (ignore.slashs.includes(interaction.commandName)) return;
+            
+            return handle(SuperChan, interaction, "SLASH");
+        } else if (interaction.isSelectMenu()) {
+            if (!SuperChan.interactions.selectMenus.get(interaction.customId)) return;
+            if (ignore.selectMenus.includes(interaction.customId)) return;
 
-    Slashs = Slashs.map(name => name.split('.')[0])
-    Buttons = Buttons.map(name => name.split('.')[0])
-
-    if (interaction.isCommand()) {
-        if (!Slashs.includes(interaction.commandName)) return interaction.reply({ content: `${emojis.error} Ops! Desculpe <@${interaction.user.id}>, mas parece que este comando não está registrado no meu sistema, eu vou notificar o meu criador para ele resolver o mais breve possível.\n${emojis.developer} <@!293913134748401674>.` })
-
-        Logs(SuperChan, interaction)
-        return Slash(SuperChan, interaction, interaction.commandName)
-    } else if (interaction.isButton()) {
-        if (IgnoredButtons.includes(interaction.customId)) return;
-        if (!Buttons.includes(interaction.customId)) return interaction.reply({ content: `${emojis.error} Ops! Desculpe <@${interaction.user.id}>, mas parece que este botão não está registrado no meu sistema, eu vou notificar o meu criador para ele resolver o mais breve possível.\n${emojis.developer} <@!293913134748401674>.` })
-
-        Logs(SuperChan, interaction)
-        return Button(SuperChan, interaction, interaction.customId)
-    }
+            return handle(SuperChan, interaction, "SELECT_MENU");
+        }
     } catch (err) {
         (interaction as CommandInteraction).reply({ content: `${emojis.error} Ops! Desculpe <@${interaction.user.id}>, mas ocorreu um erro no meu código, eu vou notificar o meu criador para ele resolver o mais breve possível.\n${emojis.developer} <@!293913134748401674>.\n\n\`\`\`js\n${err}\n\`\`\`` })
         console.log(magenta('[SCRIPT]') + red(' Ocorreu um erro! ') + err)
     }
 }
 
-async function Slash(SuperChan: SuperChanTypes, interaction: CommandInteraction , name: string) {
-    const file = require(`../slashs/${name}`)
 
-    return file.run(SuperChan, interaction)
-}
+function handle(SuperChan: SuperChanTypes, interaction: ButtonInteraction | CommandInteraction | SelectMenuInteraction, type: "BUTTON" | "SLASH" | "SELECT_MENU") {
 
-async function Button(SuperChan: SuperChanTypes, interaction: ButtonInteraction , name: string) {
-    const file = require(`../buttons/${name}`)
-
-    return file.run(SuperChan, interaction)
-}
-
-async function Logs(SuperChan: SuperChanTypes, interaction: Interaction) {
-    if (interaction.isButton()) {
-        (interaction?.guild?.channels.cache.get('878056378520989736') as ThreadChannel).send(`\*\*[LOG]\*\* O membro \`${interaction.user.tag} - ${interaction.user.id}\` utilizou o botão \`${interaction.customId}\` no canal <#${interaction.channelId}>`)
-        return console.log(blue('[LOG]') + gray(`${moment().format(' DD/MM/YY [ás] HH:mm:ss ')}`) + white(`O membro ${cyan(`${interaction.user.tag} - ${interaction.user.id}`)} utilizou o ` + yellow('botão ') + green(`'${interaction.customId}'`)))
-    } else if (interaction.isCommand()) {
-        (interaction?.guild?.channels.cache.get('878056378520989736') as ThreadChannel).send(`\*\*[LOG]\*\* O membro \`${interaction.user.tag} - ${interaction.user.id}\` utilizou o slash \`${interaction.commandName}\` no canal <#${interaction.channelId}>`)
-        return console.log(blue('[LOG]') + gray(`${moment().format(' DD/MM/YY [ás] HH:mm:ss ')}`) + white(`O membro ${cyan(`${interaction.user.tag} - ${interaction.user.id}`)} utilizou o ` + yellow('slash ') + green(`'${interaction.commandName}'`)))
+    log(SuperChan, interaction, type);
+    const data = {
+        folder: type === "BUTTON" ? "buttons" : type === "SLASH" ? "slashs" : "select-menus",
+        name: type === "SLASH" ? (interaction as CommandInteraction).commandName : (interaction as ButtonInteraction | SelectMenuInteraction).customId,
     }
+
+    const file = require(`../interactions/${data.folder}/${data.name}`)
+    return file.run(SuperChan, interaction);
+}
+
+function log(SuperChan: SuperChanTypes, interaction: ButtonInteraction | CommandInteraction | SelectMenuInteraction, type: "BUTTON" | "SLASH" | "SELECT_MENU") {
+
+    const data = {
+        type: type === "BUTTON" ? "botão" : type === "SLASH" ? "slash" : "selectMenu",
+        name: type === "SLASH" ? (interaction as CommandInteraction).commandName : (interaction as ButtonInteraction | SelectMenuInteraction).customId,
+        date: moment().format('DD/MM/YY [ás] HH:mm:ss')
+    }
+
+    const embed = new MessageEmbed()
+        .setColor('#8348a5')
+        .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }), `https://discord.com/channels/@me/${interaction.user.id}`)
+        .setTitle(`${emojis.info} Nova interação!`)
+        .setDescription(`${emojis.search} \*\*Tipo:\*\* \`${type === "BUTTON" ? "Botão" : type === "SLASH" ? "Slash" : "SelectMenu" }\`\n${emojis.file} \*\*Nome:\*\* \`${data.name}\`\n${emojis.timer} \*\*Data:\*\* <t:${Number((Date.now() as number) / 1000).toFixed()}:R>`)
+        .setFooter(`${interaction.user.id}`)
+
+    console.log(`${blue('[LOG]')} ${gray(`${data.date}`)} O membro ${cyan(`${interaction.user.tag} - ${interaction.user.id}`)} utilizou o ${yellow(data.type)} ${green(`'${data.name}'`)}`)
+    return (interaction.guild?.channels.cache.get('878056378520989736') as ThreadChannel).send({ embeds: [embed] });
 }

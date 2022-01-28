@@ -1,7 +1,7 @@
 {
     "error": "<:error:738375981240156180>",
     "success": "<:ok:738376486871891998>",
-    "info": "<:info:738376185066684457>",
+    "info": "<:ss_info:911024684110340166>",
     "developer": "<:DEVELOPER:829164689753374731>",
     "travessuras": "<:travessuras:894217219762958376>",
     "doces": "<:doces:894217219486154812>",
@@ -21,5 +21,8 @@
     "two_place": "<:2place:808122784092782603>",
     "three_place": "<:3place:808122785128775680>",
     "medal": "<:medal:808168964014080090>",
-    "translator": "<:translator:878768691708321802>"
+    "translator": "<:translator:878768691708321802>",
+    "pin": "<:ss_pins:898774086078058518>",
+    "loading": "<a:loading:854495272011563028>",
+    "peoples": "<:peoples:738376564600864798>"
 }

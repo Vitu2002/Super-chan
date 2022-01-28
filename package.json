@@ -11,7 +11,7 @@
     "url": "git+https://github.com/Vitu2002/Super-chan.git"
   },
   "engines": {
-    "node": "16.11.0"
+    "node": "^16.11.0"
   },
   "keywords": [],
   "author": {
@@ -27,7 +27,9 @@
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
-    "colors": "^1.4.0",
+    "@types/node": "^16.11.7",
+    "captcha-canvas": "^3.1.0",
+    "colors": "1.4.0",
     "discord-api-types": "^0.23.1",
     "discord.js": "13.2.0",
     "dotenv": "^10.0.0",

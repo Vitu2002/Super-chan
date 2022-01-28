@@ -1,7 +1,7 @@
 import { ButtonInteraction, Message, MessageEmbed } from "discord.js";
-import { SuperChanTypes } from "../types/Client";
-import emojis from "../json/emojis.json";
-import Tips from "../types/Tips";
+import { SuperChanTypes } from "../../types/Client";
+import emojis from "../../json/emojis.json";
+import Tips from "../../types/Tips";
 
 exports.run = async (SuperChan: SuperChanTypes, interaction: ButtonInteraction) => {
 
