@@ -17,9 +17,9 @@ exports.run = async (SuperChan: SuperChanTypes, interaction: CommandInteraction)
         '876985044927926313', // Patrocinador
         '875555236285128775', // SuperPadrinho
         '875555064108961792', // Padrinho III
-        '875554790837456897', // Padrinho II
-        '833768625675567194', // Impulsionadores
-        '867194886477316126', // Membros especiais
+        //'875554790837456897', // Padrinho II
+        //'833768625675567194', // Impulsionadores
+        //'867194886477316126', // Membros especiais
     ]; 
     const msg = await interaction.deferReply({ fetchReply: true });
 

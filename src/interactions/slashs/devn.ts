@@ -9,28 +9,10 @@ exports.run = async (SuperChan: SuperChanTypes, interaction: CommandInteraction)
         return interaction.reply({ content: `${emojis.error} Você não tem permissão para usar isso!`, ephemeral: true})
 
     const embed = new MessageEmbed()
-    .setColor('#8348a5')
-    .setAuthor('SuperScans - Obras em lançamento', `${interaction.guild?.iconURL({ dynamic: true })}`, 'https://superscans.site')
-    .setDescription(`${emojis.pin} \*\*Gostaria de ser notificado sempre que um novo capítulo da sua obra preferida estiver disponível? Basta selecionar abaixo sobre quais obras você gostaria de ser notificado.\*\*\n\n${emojis.info} \*\*Como usar?\*\*\n${emojis.pin} As obras são caracterizadas como \`Adultas\` (Manhwa Ero, Doujinshi e etc) e \`Normais\` (Manhwa, Mangá, Manhua, Webtoon e etc). Basta clicar na seção desejada e escolher qual obra você deseja pegar.`)
-    .setThumbnail("https://cdn.discordapp.com/attachments/879139551984099408/919211855614980176/20211211_095722.png")
+    .setDescription("> <:sE_Lists:936711033286979614> • **Regras**  do canal <#936716998426107924>\n> Diferentes das regras **primordiais** do servidor, esse canal se trata de um conteúdo mais sensível, e potencialmente **nocivo** se não for bem observado e moderado, tenha ciência de que você está em uma comunidade, com pessoas diferentes, o **ódio generalizado** será **punido** severamente, não propague ódio para com as pessoas que você considera diferente, até mesmo o óbvio, seja **preconceito**, **discriminação de raça**, **cor**, **origem**, **orientação sexual** ou até mesmo **classe social**, não divulgue mídias que façam referência a **genocídio** ou **extremismo**, tenha consciência de que esse é um lugar **público**, e todos nós só queremos o bem de todos aqui presentes, ao quebrar essas regras você está infligindo nossos termos e os termos do **__Discord__**, e consequentemente prejudicando nossa reputação, para relatar **denúncias**, utilize o <#833559000125276210>")
+    .setColor("#8348a5")
 
-    const row1 = new MessageActionRow()
-    .addComponents(
-        new MessageSelectMenu()
-        .setCustomId('roles-projects-hentai')
-        .setPlaceholder('Notificações de obras adultas (+18)')
-        .setOptions({label: "Em Desenvolvimento", value: "first-option", description: "Em breve..."})
-    )
-
-    const row2 = new MessageActionRow()
-    .addComponents(
-        new MessageSelectMenu()
-        .setCustomId('roles-projects-normal')
-        .setPlaceholder('Notificações de obras normais (-18)')
-        .setOptions({label: "Em Desenvolvimento", value: "first-option", description: "Em breve..."})
-    )
-
-    interaction.channel?.send({ content: `${emojis.timer} \*\*Última interação:\*\* <t:${(Date.now() / 1000).toFixed()}:R>`, components: [row1, row2], embeds: [embed] })
+    interaction.channel?.send({ embeds: [embed] })
 }
 
 exports.data = new SlashCommandBuilder()
