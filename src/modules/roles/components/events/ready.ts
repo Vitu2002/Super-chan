@@ -8,7 +8,7 @@ module.exports = async (Client: SuperChan) => {
         status: "online",
         activities: [{
             type: "WATCHING",
-            name: "slashs"
+            name: "roles"
         }]
     });
 
